@@ -1,0 +1,19 @@
+erDiagram
+  ADMINS { int admin_id PK string username UK string password_hash }
+  SPORTS { int sport_id PK string name UK boolean allows_draw string score_label }
+  TOURNAMENTS { int tournament_id PK int sport_id FK string name UK enum format date start_date date end_date string venue int team_limit enum status int points_win int points_draw int points_loss }
+  TEAMS { int team_id PK string name UK string coach_name string contact_email string contact_phone string home_city }
+  PLAYERS { int player_id PK int team_id FK string full_name date date_of_birth string playing_position int jersey_number }
+  TOURNAMENT_REGISTRATIONS { int registration_id PK int tournament_id FK int team_id FK datetime registered_at }
+  MATCHES { int match_id PK int tournament_id FK int match_number string round_name int home_registration_id FK int away_registration_id FK date match_date time match_time string venue enum status int next_match_id FK enum next_slot }
+  MATCH_RESULTS { int match_id PK_FK int home_score int away_score int winner_registration_id FK boolean is_draw string result_note }
+  SPORTS ||--o{ TOURNAMENTS : classifies
+  TEAMS ||--o{ PLAYERS : has
+  TOURNAMENTS ||--o{ TOURNAMENT_REGISTRATIONS : accepts
+  TEAMS ||--o{ TOURNAMENT_REGISTRATIONS : enters
+  TOURNAMENTS ||--o{ MATCHES : schedules
+  TOURNAMENT_REGISTRATIONS ||--o{ MATCHES : home_side
+  TOURNAMENT_REGISTRATIONS ||--o{ MATCHES : away_side
+  MATCHES ||--o| MATCH_RESULTS : records
+  TOURNAMENT_REGISTRATIONS ||--o{ MATCH_RESULTS : wins
+  MATCHES o|--o{ MATCHES : advances_to
